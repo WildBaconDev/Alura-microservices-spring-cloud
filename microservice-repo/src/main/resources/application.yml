@@ -1,5 +1,5 @@
 ---
 server:  port: 8888
   
-spring:  profiles:    active: native
-  cloud:    config:      server:        native:          search-locations: C:\Users\blizz\dev\repository\alura-microservices-spring-cloud
+spring:
+  cloud:    config:      server:        git:          uri: https://github.com/WildBaconDev/Alura-config-server          search-paths: fornecedor
