@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.alura.microservice.config</groupId>
-	<artifactId>microservice-repo</artifactId>
+	<artifactId>config-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>microservice-repo</name>
+	<name>config-server</name>
 	<description>ConfigServer</description>
 	<properties>
 		<java.version>11</java.version>

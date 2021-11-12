@@ -1,5 +1,7 @@
 package br.com.alura.microservice.loja.service;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import br.com.alura.microservice.loja.client.FornecedorClient;
 import br.com.alura.microservice.loja.dto.CompraDTO;
 import br.com.alura.microservice.loja.model.Compra;
+import br.com.alura.microservice.loja.repository.CompraRepository;
 
 @Service
 public class CompraService {
@@ -19,13 +22,11 @@ public class CompraService {
 	@Autowired
 	private FornecedorClient fornecedorClient;
 	
+	@Autowired
+	private CompraRepository compraRepository;
+	
 	@HystrixCommand(fallbackMethod = "realizaCompraFallback")
 	public Compra realizaCompra(CompraDTO compra) {
-		
-		final String estado = compra.getEndereco().getEstado();
-		
-		log.info("buscando informações do fornecedor de {}", estado);
-		var info = fornecedorClient.getInfoPorEstado(estado);
 		
 		log.info("realizando um pedido");
 		var pedido = fornecedorClient.realizaPedido(compra.getItens());
@@ -34,7 +35,7 @@ public class CompraService {
 		compraSalva.setPedidoId( pedido.getId() );
 		compraSalva.setTempoDePreparo( pedido.getTempoDePreparo() );
 		compraSalva.setEnderecoDestino( compra.getEndereco().toString() );
-		
+		compraRepository.save(compraSalva);
 		
 		return compraSalva;
 	}
@@ -43,6 +44,11 @@ public class CompraService {
 		var compraFallback = new Compra();
 		compraFallback.setEnderecoDestino(compra.getEndereco().toString());
 		return compraFallback;
+	}
+
+	@HystrixCommand
+	public Optional<Compra> getById(Long id) {
+		return compraRepository.findById(id);
 	}
 
 }
