@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class VoucherDTO {
 
 	private Long numero;
-	
+
 	private LocalDate previsaoParaEntrega;
 
 	public Long getNumero() {
@@ -23,4 +23,5 @@ public class VoucherDTO {
 	public void setPrevisaoParaEntrega(LocalDate previsaoParaEntrega) {
 		this.previsaoParaEntrega = previsaoParaEntrega;
 	}
+
 }
